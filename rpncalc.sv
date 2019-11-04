@@ -243,39 +243,37 @@ end
 6'b00_1101 : begin
   if (current_state ==  pop1) begin
    op = 4'b0100; // Op for adding
-   //val2 = B; // val2 = {16'b0, B[15:0]}; 
    pop = 1'b1;
-
   end
   if (current_state ==  pop2) pop = 1'b1;
   if (current_state == push1) begin
     pop = 1'b0;
-    val2 = B; // val2 = {16'b0, B[15:0]};  
-    //op = 4'b0100; // Op for adding
-    //val2 = B; // val2 = {16'b0, B[15:0]};
+    val2 = B; 
     push = 1'b1;
- end
- /*
- op = 4'b0100; // Op for adding
- pop = 1'b1;
- //pop = 1'b0;
- //pop = 1'b1;
- //pop = 1'b0;
- val2 = B; // val2 = {16'b0, B[15:0]};
- push = 1'b1;
- //push = 1'b0;
-*/
+  end
 end
 
 //____________________________________________________________________________________________
 // Pop top two and push difference
 6'b00_1110 : begin
+  if (current_state ==  pop1) begin
+   op = 4'b0101; // Op for subracting
+   pop = 1'b1;
+  end
+  if (current_state ==  pop2) pop = 1'b1;
+  if (current_state == push1) begin
+    pop = 1'b0;
+    val2 = B; 
+    push = 1'b1;
+  end
+/*
  op = 4'b0101; // Op for subracting
  pop = 1'b1;
  pop = 1'b0;
  val2 = B; // val2 = {16'b0, B[15:0]};
  push = 1'b1;
  push = 1'b0;
+*/
 end
 
 
@@ -317,63 +315,10 @@ end
 end
 
 // TODO 6 more cases and the reverse case
-
-
 default : begin
 // TODO Finsh Default
 end
-
 endcase
-
-
-
-
-
-
-
-
-
-
-
-
-
 end
-
-
- 
 endmodule
 
-
-/*
-
-// Pop value off stack
-if (current_state == idle && next_state == idle && full == 1'b1) pop = 1'b1;
-
-// Push value onto stack
-if (current_state == idle && next_state == idle) push = 1'b1;
-
-
-// Pop - Pop - Push for Operations
-if (current_state == idle && next_state == pop1) pop = 1'b1;
-if (current_state == pop1 && next_state == pop2) pop = 1'b1;
-if (current_state == push1) begin
- op = 4'b0100; // Op for adding
- push = 1'b1;
- val2 = {16'b0, Bout[15:0]};
-end
-
-// This is for REVERSING the stack values
-// -------- MODIFY THIS TO WORK PORPERLY ----------------//
-if (current_state == pop1) pop = 1'b1;
-if (current_state == pop2) pop = 1'b1;
-if (current_state == push1 ) begin
- push = 1'b1;
- val2 = {16'b0, top_captured};
-end
-
-if (current_state == push1) begin
- push = 1'b1;
- val2 = {16'b0, next_captured};
-end
-
-*/
