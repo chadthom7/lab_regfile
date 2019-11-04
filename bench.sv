@@ -48,9 +48,17 @@ module bench;
 
 	// CLOCK FOR DOWNLOADING VECTORS
 	always begin
-		clk2 = 1'b1; #25; clk2 = 1'b0; #25;
+		//posedge at beginning switches to negedge for #5 to check results
+		clk2 = 1'b1; #65; clk2 = 1'b0; #5;
+		//clk2 = 1'b1; #30; clk2 = 1'b0; #30; // completes cycle 6 posedges of clk later
+		//clk2 = 1'b1; #25; clk2 = 1'b0; #25; // completes cycle 5 posedges of clk later
 	end
-
+	/*
+	always begin
+		if(posedge clk2)
+			clk_test = 1'b1;clk = 1'b1; #5; clk = 1'b0; #5;
+	end
+	*/
 	/*
 	always @(negedge clk2) begin
 		//#5; 
@@ -97,6 +105,7 @@ module bench;
 			error = error + 32'b1;
 			$display("---------------------------------------------------------");
 		end else begin
+			$display("----------------------Passed-----------------------------------");
 			$display("top_expected = %h, top = %h", top_expected, top);
 			$display("next_expected = %h, next = %h", next_expected, next);	
 			$display("counter_expected = %h, counter = %h", counter_expected, counter);
