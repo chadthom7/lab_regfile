@@ -1,0 +1,46 @@
+# Individual Files
+transcript
+note
+todo.txt
+
+README.pdf
+prelab.pdf
+
+.nfs0000000007d009eb000000df
+CSCE611_lab_regfile.asm.rpt
+CSCE611_lab_regfile.done
+CSCE611_lab_regfile.fit.rpt
+CSCE611_lab_regfile.fit.smsg
+CSCE611_lab_regfile.fit.summary
+CSCE611_lab_regfile.flow.rpt
+CSCE611_lab_regfile.htm
+CSCE611_lab_regfile.jdi
+CSCE611_lab_regfile.map.rpt
+CSCE611_lab_regfile.map.smsg
+CSCE611_lab_regfile.map.summary
+CSCE611_lab_regfile.pin
+CSCE611_lab_regfile.qpf
+CSCE611_lab_regfile.qsf
+CSCE611_lab_regfile.qws
+CSCE611_lab_regfile.sdc
+CSCE611_lab_regfile.sld
+CSCE611_lab_regfile.sof
+CSCE611_lab_regfile.sta.rpt
+CSCE611_lab_regfile.sta.summary
+
+CSCE611_lab_regfile_assignment_defaults.qdf
+
+
+vsim.wlf
+
+
+
+# Multiple Files
+*.bak
+
+# Individual Directories
+db
+incremental_db
+work
+
+
