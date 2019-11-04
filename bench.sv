@@ -77,7 +77,7 @@ module bench;
 
 
 
-	always @(posedge clk2) begin
+	always @(negedge clk2) begin
 		if (~rst && key!= 4'b1111) begin
 		if (top!=top_expected || next != next_expected || counter != counter_expected) begin
 	$display("Error Detected: mode = %h key = %h val = %h top_expected = %h next_expected = %h counter_expected = %h", 

@@ -41,7 +41,7 @@ logic [5:0] caseVal;
 logic [7:0] shamt;
 logic [31:0] A, B, Aout, Bout;
 logic [31:0] stack_top, stack_top_minus_one, val2;
-
+logic [31:0] top_captured, next_captured; //changed to 31 from 15
 
 // Declaration of state types
 typedef enum logic [3:0] {idle,pop1,pop2,push1} state_type;
@@ -62,10 +62,10 @@ stack STACK(.clk(clk),
 //hexdriver mydriver(.val(), .HEX());
  
 // Instantiation of ALU
-alu ALU(.a(stack_top), .b(stack_top_minus_one), .op(op), .shamt(shamt), .hi(A), .lo(B), .zero());
-//alu myALU(.a({16'b0, top}), .b({16'b0, next}), .op(op), .shamt(shamt), .hi(A), .lo(B), .zero());
+//alu ALU(.a(stack_top), .b(stack_top_minus_one), .op(op), .shamt(shamt), .hi(A), .lo(B), .zero());
+alu ALU(.a(top_captured), .b(next_captured), .op(op), .shamt(shamt), .hi(A), .lo(B), .zero());
 
-logic [15:0] top_captured, next_captured;
+
 
 // For saving the values on the stack for reversing
 always_ff @(posedge clk) begin
@@ -83,6 +83,7 @@ assign Aout = top;
 assign Bout = next;
 
 /*
+
 
 logic [3:0] Hex0, Hex1, Hex2, Hex3, Hex4, Hex5, Hex6, Hex7;
 
@@ -228,17 +229,18 @@ end
 end
 
  
-// Pop top two and push sum
+// Pop top two and push sum           this works, top =7
 6'b00_1101 : begin
   if (current_state ==  pop1) begin
    op = 4'b0100; // Op for adding
-   val2 = B; // val2 = {16'b0, B[15:0]}; 
+   //val2 = B; // val2 = {16'b0, B[15:0]}; 
    pop = 1'b1;
 
   end
   if (current_state ==  pop2) pop = 1'b1;
   if (current_state == push1) begin
     pop = 1'b0;
+    val2 = B; // val2 = {16'b0, B[15:0]};  
     //op = 4'b0100; // Op for adding
     //val2 = B; // val2 = {16'b0, B[15:0]};
     push = 1'b1;
