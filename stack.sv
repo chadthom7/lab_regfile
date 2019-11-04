@@ -4,18 +4,14 @@ module stack (
 	input [31:0] data_in, 
 	output [31:0] stack_top, 
 	stack_top_minus_one,
-	output full, empty);
+	output full, empty, logic [5:0] stack_ptr);
 	// stack_ptr is the ptr to the top most spot of stack
 	// stack_top_ptr is next to top of stack
  
 	
-	logic [5:0] stack_top_ptr, stack_ptr;
-/*
-	always @(posedge rst) begin
-		stack_ptr <= 6'd0;
-		stack_top_ptr <= 6'd0;
-	end
-*/
+	logic [5:0] stack_top_ptr;
+	//logic [5:0] stack_top_ptr, stack_ptr;
+
 	cnt6 cnt6(.clk(clk), 
 						.rst(rst), 
 						.en_up(push), 

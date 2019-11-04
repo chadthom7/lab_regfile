@@ -43,6 +43,10 @@ logic [31:0] A, B, Aout, Bout;
 logic [31:0] stack_top, stack_top_minus_one, val2;
 logic [31:0] top_captured, next_captured; //changed to 31 from 15
 
+logic [5:0] stack_ptr;
+// [7:0] .... counter = {2'b0, stack_ptr[5:0]}; 
+
+
 // Declaration of state types
 typedef enum logic [3:0] {idle,pop1,pop2,push1} state_type;
 state_type current_state, next_state;
@@ -56,8 +60,9 @@ stack STACK(.clk(clk),
  .data_in(val2),
  .stack_top(stack_top),
  .stack_top_minus_one(stack_top_minus_one),
- .full(full),
- .empty(empty)); // Full and empty return bit values ie, True / False
+ .full(full), 
+ .empty(empty),
+ .stack_ptr(stack_ptr)); // Full and empty return bit values ie, True / False
  
 //hexdriver mydriver(.val(), .HEX());
  
@@ -116,11 +121,16 @@ always_ff @ (posedge clk) begin
 key_dly <= key;
 key_dly2 <= key_dly;
 end
+/*
+always @(posedge clk) begin
+counter = {2'b0, stack_ptr[5:0]}; 
+end
+*/
+assign counter = {2'b0, stack_ptr[5:0]};
 
-// Debouncer ?
-// Key push assigned based on delay
+
+// Debouncer, Key push assigned based on delay
 assign key_push = &key_dly2 & ~&key_dly;
- // key_push = &key_dly2 & ~&key_dly;  
 always_ff @(posedge clk) if (rst) current_state <= idle; else current_state <= next_state;
 
 // This block controls the state logic / State Register
