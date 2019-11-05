@@ -1,0 +1,7 @@
+Testing:
+- Open terminal in main directory of project, then
+./csce611.sh compile
+./csce611.sh simulate
+
+- displays the results of vectors on the negative edge of clk2
+
