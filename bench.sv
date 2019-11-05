@@ -1,21 +1,9 @@
 module bench;
-	
-
 //____________________________________________________________
 
 	reg clk, clk2, rst;
 	reg [1:0 ] mode;	/* mode from SW17 and SW16 */ ///  mode = switch
 	reg [3:0 ] key;		/* value from KEYs */
-				/* Remember that the 2 bit mode and
-					 * 4 bit key value are used to
-					 * uniquely identify one of 16
-					 * operations. Also keep in mind that
-					 * they keys are onehot (i.e. only one
-					 * key is pressed at a time -- if
-					 * more than one key is pressed at a
-					 * time, the behavior is undefined
-					 * (i.e. you may choose your own
-					 * behavior). */
 	reg [15:0] val;		/* 16 bit value from SW15...SW0 */
 	reg [15:0] top;		/* 16 bit value at the top of the
 					 * stack, to be shown on HEX3...HEX0 */
@@ -26,7 +14,6 @@ module bench;
 	// TESTBENCH DATA
 	logic [61:0] vectors [99:0]; // 1e3 62 bit test vectors
 	logic [31:0] error, vectornum; // error counter
-
 	// EXPECTED INPUT
 	reg [15:0] top_expected;
 	reg [15:0] next_expected;
@@ -36,10 +23,8 @@ module bench;
 		//key   = 4'b1111; // making sure keys start out as unpressed (being pressed is active low)
 		error = 0;	
 	end
-	
 	/* instantiate the ALU we plan to test */
 	rpncalc rpncalc(.clk(clk), .rst(rst), .mode(mode), .key(key), .val(val), .top(top), .next(next), .counter(counter));
-
 
 	// RPNCALC CLOCK
 	always begin
@@ -49,22 +34,11 @@ module bench;
 	// CLOCK FOR DOWNLOADING VECTORS
 	always begin
 		//posedge at beginning switches to negedge for #5 to check results
-		clk2 = 1'b1; #65; clk2 = 1'b0; #5;
+		clk2 = 1'b1; #75; clk2 = 1'b0; #5; // was #65 #5
 		//clk2 = 1'b1; #30; clk2 = 1'b0; #30; // completes cycle 6 posedges of clk later
 		//clk2 = 1'b1; #25; clk2 = 1'b0; #25; // completes cycle 5 posedges of clk later
 	end
-	/*
-	always begin
-		if(posedge clk2)
-			clk_test = 1'b1;clk = 1'b1; #5; clk = 1'b0; #5;
-	end
-	*/
-	/*
-	always @(negedge clk2) begin
-		//#5; 
-		key <= 4'b1111;
-	end
-	*/
+
 	initial begin
 		$readmemb("vectors.dat", vectors); // read as bits
 		vectornum = 32'b0; 
@@ -72,9 +46,6 @@ module bench;
 		rst = 1'b1; #27; rst = 1'b0;		
 	end
 
-
-			// keys have active low mapping of the 4 bits for which one is pressed 
-			// key3 = 0111 or 7     key2= 1011 or 11    key1 = 1101 or 13      key0 = 1110 or 14
 	always @(posedge clk2) begin
 		{mode, key, val, top_expected, next_expected, counter_expected} = vectors[vectornum]; 
 		//vector doesn't need clk, rst
@@ -82,8 +53,6 @@ module bench;
 		// 2+ 4+ 16*3 + 8 =>  14 + 16*3 => 14 + 48 = 62 bits
 		vectornum = vectornum + 1;
 	end	
-
-
 
 	always @(negedge clk2) begin
 		if (~rst && key!= 4'b1111) begin
@@ -111,14 +80,7 @@ module bench;
 			$display("counter_expected = %h, counter = %h", counter_expected, counter);
 		end
 		end
-		
 	end
-
-
-		
-
-
-
 endmodule
 
 

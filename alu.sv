@@ -15,7 +15,7 @@ always @(*) begin
 
 	// arithmetic operations
 	4'b01_00: lo = a+b; // add
-	4'b01_01: lo = a-b; // sub
+	4'b01_01: lo = b-a; // sub
 
 	// mult signed
 	4'b01_10: {hi,lo} = $signed(a)*$signed(b);
@@ -24,8 +24,8 @@ always @(*) begin
 	4'b01_11: {hi,lo} = a*b;
 
 	// shifter operations
-	4'b10_00: lo = b << shamt; // sll
-	4'b10_01: lo = b >> shamt; // srl
+	4'b10_00: lo = b << a; // sll  // changed shamt to a
+	4'b10_01: lo = b >> a; // srl  // changed shamt to a
 	4'b10_1?: lo = $signed(b) >>> shamt; //sra
 
 	// comparison operations
