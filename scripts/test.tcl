@@ -11,7 +11,7 @@ vsim -novopt work.bench
 echo "------ Setup Waves ------------------------------------------------------------"
 add wave -r /bench/*
 echo "------ Simulate ---------------------------------------------------------------"
-run 5000
+run 10000
 # make sure the transcript window is visible
 view transcript
 # bring waves to foreground

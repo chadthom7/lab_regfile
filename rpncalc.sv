@@ -211,8 +211,8 @@ end
  //pop = 1'b0;
 end
 
- 
-// Pop top two and push sum           this works, top =7
+//____________________________________________________________________________________________
+// Pop top two and push sum           
 6'b00_1101 : begin
   if (current_state ==  pop1) begin
    op = 4'b0100; // Op for adding
@@ -226,7 +226,7 @@ end
   end
 end
 
-//____________________________________________________________________________________________ Might be backwards, this is (top - next)xxxx now it's next-top (I changed alu formula)
+//_____________________________________ Might be backwards, this is (top - next)xxxx now it's next-top (I changed alu formula)
 // Pop top two and push difference
 6'b00_1110 : begin
   if (current_state ==  pop1) begin
@@ -240,10 +240,25 @@ end
     push = 1'b1;
   end
 end
+//____________________________________________________________________________________________
+
+// Pop top two and push product
+6'b01_0111 : begin
+  if (current_state ==  pop1) begin
+   op = 4'b0111; // Op for multiplication
+   pop = 1'b1;
+  end
+  if (current_state ==  pop2) pop = 1'b1;
+  if (current_state == push1) begin
+    pop = 1'b0;
+    val2 = B; 
+    push = 1'b1;
+  end
+end
 
 //____________________________________________________________________________________________
 // Pop top two, shift left by top most value
-6'b01_1101 : begin 
+6'b01_1011 : begin 
   if (current_state ==  pop1) begin
    op = 4'b1000; // Op for shifting
    pop = 1'b1;
@@ -255,44 +270,89 @@ end
     push = 1'b1;
   end
 end 
-/*
- op = 4'b1000; // Op for shifting left by top value on stack
- pop = 1'b1;
- pop = 1'b0;
- val2 = B; // val2 = {16'b0, B[15:0]};
- push = 1'b1;
- push = 1'b0;
-end
-*/
 //____________________________________________________________________________________________
 
 // Pop top two shift right by top most value
 6'b01_1101 : begin
- op = 4'b1001; // Op for shifting right by top value on stack
- pop = 1'b1;
- pop = 1'b0;
- val2 = B; // val2 = {16'b0, B[15:0]};
- push = 1'b1;
+  if (current_state ==  pop1) begin
+    op = 4'b1001; // Op for shifting
+    pop = 1'b1;
+  end
+  if (current_state ==  pop2) pop = 1'b1;
+  if (current_state == push1) begin
+    pop = 1'b0;
+    val2 = B; 
+    push = 1'b1;
+  end
 end
-
+//____________________________________________________________________________________________
 
 // Pop top two compare, if A < B is true, push A... push 0 otherwise
 // Ouput from the alu will be a binary value for B, Bout, and stack_top_minus_one
 6'b01_1110 : begin
- op = 4'b1101; // Op for comparing A < B (unsigned)
- pop = 1'b1;
- 
- if (B == 1'b1) begin
-  val2 = {16'b0, top};
-  push = 1'b1;
- end
- else begin
-  val2 = {32'b0};
-  push = 1'b1;
- end
+   if (current_state ==  pop1) begin
+     op = 4'b1100; // Op for 
+     pop = 1'b1;
+  end
+  if (current_state ==  pop2) pop = 1'b1;
+  if (current_state == push1) begin
+    pop = 1'b0;
+    val2 = B; 
+    push = 1'b1;
+  end
 end
 
-//_____________________Reverse Case_______________________________________________________________________
+//__________________________________________________________________________________and or nor xor
+6'b10_0111 : begin
+   if (current_state ==  pop1) begin
+     op = 4'b0000; // Op for and
+     pop = 1'b1;
+  end
+  if (current_state ==  pop2) pop = 1'b1;
+  if (current_state == push1) begin
+    pop = 1'b0;
+    val2 = B; 
+    push = 1'b1;
+  end
+end
+
+6'b10_1011 : begin
+   if (current_state ==  pop1) begin
+     op = 4'b0001; // Op for or
+     pop = 1'b1;
+  end
+  if (current_state ==  pop2) pop = 1'b1;
+  if (current_state == push1) begin
+    pop = 1'b0;
+    val2 = B; 
+    push = 1'b1;
+  end
+end
+6'b10_1101 : begin
+   if (current_state ==  pop1) begin
+     op = 4'b0010; // Op for nor
+     pop = 1'b1;
+  end
+  if (current_state ==  pop2) pop = 1'b1;
+  if (current_state == push1) begin
+    pop = 1'b0;
+    val2 = B; 
+    push = 1'b1;
+  end
+end
+6'b10_1110 : begin
+   if (current_state ==  pop1) begin
+     op = 4'b0011; // Op for xor
+     pop = 1'b1;
+  end
+  if (current_state ==  pop2) pop = 1'b1;
+  if (current_state == push1) begin
+    pop = 1'b0;
+    val2 = B; 
+    push = 1'b1;
+  end
+end
+//_____________________Uno Reverse Card_______________________________________________________________________
 6'b11_0111 : begin
   if (current_state ==  pop1) begin
    pop = 1'b1;
@@ -310,8 +370,6 @@ end
     push = 1'b1;
   end
 end
-
-
 
 // TODO 6 more cases and the reverse case
 default : begin

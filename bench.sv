@@ -12,7 +12,7 @@ module bench;
 	reg [7:0] counter;		/* counter value to show on LEDG */
 //_____________________________________________________________
 	// TESTBENCH DATA
-	logic [61:0] vectors [99:0]; // 1e3 62 bit test vectors
+	logic [61:0] vectors [149:0]; // 150 62 bit test vectors
 	logic [31:0] error, vectornum; // error counter
 	// EXPECTED INPUT
 	reg [15:0] top_expected;
@@ -61,20 +61,24 @@ module bench;
 				mode, key, val, top_expected, next_expected, counter_expected);
 			$display("");
 			//$display("hi = %h(%h expected)", hi, hi_e);
-			$display("Error Detected in top: output = %h", top);
+			$display("         top = %h", top);
 			$display("top_expected = %h", top_expected);	
 			$display("");
 			//$display("lo = %h(%h expected)", lo, lo_e);
-			$display("Error Detected in next: output = %h", next);
+			$display("         next = %h", next);
 			$display("next_expected = %h", next_expected);
 			$display("");
 			//$display("zero = %h(%h expected)", zero, zero_e);
-			$display("Error Detected in counter: output = %h", counter);
+			$display("         counter = %h", counter);
 			$display("counter_expected = %h", counter_expected);	
 			error = error + 32'b1;
 			$display("---------------------------------------------------------");
 		end else begin
 			$display("----------------------Passed-----------------------------------");
+/*		
+		$display("mode = %b key = %b val = %b top_expected = %b next_expected = %b counter_expected = %b", 
+				mode, key, val, top_expected, next_expected, counter_expected);
+		*/	
 			$display("top_expected = %h, top = %h", top_expected, top);
 			$display("next_expected = %h, next = %h", next_expected, next);	
 			$display("counter_expected = %h, counter = %h", counter_expected, counter);
